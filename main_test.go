@@ -30,14 +30,11 @@ func TestMainHandlerWhenCorrectRequest(t *testing.T) {
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
 
-	body := responseRecorder.Body.String()
-
 	require.Equal(t, responseRecorder.Code, http.StatusOK)
-	assert.NotEmpty(t, body)
+	assert.NotEmpty(t, responseRecorder.Body)
 }
 
 func TestMainHandlerWhenNotCorrectCity(t *testing.T) {
-	answer := "wrong city value"
 	req := httptest.NewRequest("GET", "/cafe?count=4&city=london", nil)
 
 	responseRecorder := httptest.NewRecorder()
@@ -47,5 +44,5 @@ func TestMainHandlerWhenNotCorrectCity(t *testing.T) {
 	body := responseRecorder.Body.String()
 
 	require.Equal(t, responseRecorder.Code, http.StatusBadRequest)
-	assert.Equal(t, answer, body)
+	assert.Equal(t, "wrong city value", body)
 }
